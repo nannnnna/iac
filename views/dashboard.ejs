@@ -7,6 +7,10 @@
 <h1>Welcome to the Dashboard, <%= user.fullName %>!</h1>
 <% if (user.roles.includes('ROLE_LIST_VIEW')) { %>
     <h2>List of Books</h2>
+    <form onsubmit="submitSearch(event)">
+        <input type="text" name="search" placeholder="Search in all fields..." value="<%= searchQuery %>">
+        <button type="submit">Search</button>
+    </form>
     <table id="booksTable" border="1">
         <thead>
         <tr>
@@ -58,6 +62,14 @@
 <script>
     function fetchBooks(page) {
         location.href = `/dashboard?page=${page}`;
+    }
+    function submitSearch(event) {
+        event.preventDefault(); // Prevent the form from submitting traditionally
+        const searchValue = event.target.elements.search.value;
+        const url = new URL(window.location.href);
+        url.searchParams.set('search', searchValue);
+        url.searchParams.set('page', 1); // Reset to the first page
+        window.location.href = url.toString();
     }
 </script>
 </body>

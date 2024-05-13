@@ -3,13 +3,14 @@ const User = require('../models/user');
 
 exports.getDashboard = async (req, res) => {
     try {
+        const search = req.query.search || '';
         const page = parseInt(req.query.page) || 1;
         const limit = 20;
         const sort = {
             column: req.query.sort_column || 'id',
             direction: req.query.sort_direction || 'asc'
         };
-        const { rows, totalItems, totalPages } = await Book.findAll({ page, limit, sort });
+        const { rows, totalItems, totalPages } = await Book.findAll({ page, limit, sort, search });
         const roleIds = await User.getUserRoles(req.session.user.userId);
         const roleNames = await User.getRoleNames(roleIds);
 
@@ -20,7 +21,9 @@ exports.getDashboard = async (req, res) => {
             totalPages: totalPages,
             roleNames: roleNames,
             currentPage: page,
-            sort: sort
+            sort: sort,
+            searchQuery: search
+
         });
     } catch (error) {
         console.error('Error loading books:', error);
