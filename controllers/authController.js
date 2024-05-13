@@ -9,36 +9,21 @@ exports.login = async (req, res) => {
         if (!user || !bcrypt.compareSync(password, user.password)) {
             return res.status(401).send('Неверно указаны имя или пароль пользователя');
         }
-        const token = jwt.sign({ userId: user.user_id }, process.env.SECRET_KEY);
-        req.session.user = { userId: user.user_id, login: user.login, fullName: user.full_name, role: user.role};
+        const roleIds = await User.getUserRoles(user.id);
+        const roleNames = await User.getRoleNames(roleIds);
+        req.session.user = {
+            userId: user.id,
+            login: user.login,
+            fullName: user.full_name,
+            roles: roleNames
+        };
+        const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY);
+        console.log('Session user set:', req.session.user);
         res.redirect('/dashboard');
     } catch (error) {
+        console.error('Login error:', error);
         res.status(500).send('Server error');
     }
-};
-
-// exports.login = async (req, res) => {
-//     const { login, password } = req.body;
-//     try {
-//         const user = await User.find(login);
-//         if (!user) {
-//             return res.status(401).send('Login failed: User not found.');
-//         }
-//         const isMatch = await bcrypt.compare(password, user.password);
-//         if (isMatch) {
-//             req.session.user = { id: user.id, login: user.login, role: user.role };
-//             res.redirect('/dashboard');
-//         } else {
-//             res.status(401).send('Login failed: Incorrect username or password.');
-//         }
-//     } catch (err) {
-//         res.status(500).send('Server error during authentication.');
-//     }
-// };
-
-exports.logout = (req, res) => {
-    req.session.destroy();
-    res.redirect('/login');
 };
 
 exports.register = async (req, res) => {
@@ -54,4 +39,9 @@ exports.register = async (req, res) => {
         console.error(error);
         res.status(500).send('Server error during registration');
     }
+};
+
+exports.logout = (req, res) => {
+    req.session.destroy();
+    res.redirect('/login');
 };

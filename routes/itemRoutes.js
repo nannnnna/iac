@@ -1,4 +1,5 @@
 const express = require('express');
+const roleCheck = require('../middleware/roleMiddleware');
 const { getAllBooks, getBook, createBook, updateBook, deleteBook } = require('../controllers/itemController');
 const router = express.Router();
 
@@ -16,5 +17,7 @@ router.put('/books/:id', updateBook);
 
 // Удаление книги
 router.delete('/books/:id', deleteBook);
+
+router.get('/data_list', roleCheck('ROLE_LIST_VIEW'), getAllBooks);
 
 module.exports = router;
