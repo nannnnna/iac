@@ -2,14 +2,12 @@ const express = require('express');
 const session = require('express-session');
 const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
-const dashboardRoutes = require('./routes/dashboardRoutes');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const Book = require('./models/item');
-const User = require('./models/user');
+
 const PORT = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
@@ -26,8 +24,7 @@ app.use(session({
 }));
 
 app.use(authRoutes);
-app.use('/api', itemRoutes);
-app.use(dashboardRoutes);
+app.use(itemRoutes);
 
 app.get('/', (req, res) => {
     if (req.session.user) {
