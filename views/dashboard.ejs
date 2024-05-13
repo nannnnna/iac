@@ -17,6 +17,8 @@
             <th>Decimal Attribute</th>
             <th>Date</th>
             <th>DateTime</th>
+            <th>Simple Ref</th>
+            <th>Hierarchical Ref</th>
         </tr>
         </thead>
         <tbody>
@@ -29,15 +31,19 @@
                 <td><%= book.decimal_attribute %></td>
                 <td><%= book.date_attribute %></td>
                 <td><%= book.datetime_attribute %></td>
+                <td><%= book.simple_ref %></td>
+                <td><%= book.hierarchical_ref %></td>
+
             </tr>
         <% }) %>
         </tbody>
     </table>
     <div id="pagination">
         <% for(let i = 1; i <= totalPages; i++) { %>
-            <a href="/dashboard?page=<%= i %>"><%= i %></a>
+            <a href="/dashboard?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
         <% } %>
     </div>
+    <span>Total items: <%= totalItems %></span>
 <% } %>
 <% if (user.roles.includes('ROLE_ADD')) { %>
     <button onclick="redirectToAddPage()">Добавить</button>
