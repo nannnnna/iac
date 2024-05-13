@@ -19,7 +19,8 @@ exports.getDashboard = async (req, res) => {
             totalItems: totalItems,
             totalPages: totalPages,
             roleNames: roleNames,
-            currentPage: page
+            currentPage: page,
+            sort: sort
         });
     } catch (error) {
         console.error('Error loading books:', error);

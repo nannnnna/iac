@@ -40,7 +40,7 @@
     </table>
     <div id="pagination">
         <% for(let i = 1; i <= totalPages; i++) { %>
-            <a href="/dashboard?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+            <a href="/dashboard?page=<%= i %>&sort_column=<%= sort.column %>&sort_direction=<%= sort.direction %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
         <% } %>
     </div>
     <span>Total items: <%= totalItems %></span>
