@@ -1,9 +1,13 @@
 const db = require('../db');
 
 class Book {
-    static async findAll({ page = 1, limit = 20 }) {
+    static async findAll({ page = 1, limit = 20, sort = { column: 'id', direction: 'asc' } })  {
         const offset = (page - 1) * limit;
-        const query = `SELECT * FROM books LIMIT ${limit} OFFSET ${offset}`;
+        let query = `SELECT * FROM books`;
+        if (sort.column && sort.direction) {
+            query += ` ORDER BY ${sort.column} ${sort.direction}`;
+        }
+        query += ` LIMIT ${limit} OFFSET ${offset}`;
         const countQuery = `SELECT COUNT(*) FROM books`;
 
         try {

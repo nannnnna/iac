@@ -5,7 +5,10 @@ exports.getDashboard = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = 20;
-        const sort = req.query.sort ? { column: req.query.sort_column, direction: req.query.sort_direction } : undefined;
+        const sort = {
+            column: req.query.sort_column || 'id',
+            direction: req.query.sort_direction || 'asc'
+        };
         const { rows, totalItems, totalPages } = await Book.findAll({ page, limit, sort });
         const roleIds = await User.getUserRoles(req.session.user.userId);
         const roleNames = await User.getRoleNames(roleIds);
