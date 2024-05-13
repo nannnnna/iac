@@ -26,6 +26,35 @@ class Book {
             console.error("Database query error:", error);
             throw error;
         }
+
+    }
+    static async create(data) {
+        const {
+            title,
+            description,
+            integer_attribute,
+            decimal_attribute,
+            date_attribute,
+            datetime_attribute,
+            simple_ref,
+            hierarchical_ref,
+            image,
+            blob_data
+        } = data;
+        const query = `
+            INSERT INTO books 
+            (title, description, integer_attribute, decimal_attribute, date_attribute, datetime_attribute, simple_ref, hierarchical_ref, image, blob_data) 
+            VALUES 
+            ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            RETURNING *;
+        `;
+        const values = [title, description, integer_attribute, decimal_attribute, date_attribute, datetime_attribute, simple_ref, hierarchical_ref, image, blob_data];
+        try {
+            const {rows} = await db.query(query, values);
+            return rows[0];
+        } catch (error) {
+            throw new Error(`Error creating new book: ${error.message}`);
+        }
     }
 }
 

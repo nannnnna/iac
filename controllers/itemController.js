@@ -43,3 +43,11 @@ exports.getAllBooks = async (req, res) => {
         res.status(500).send("Server error while retrieving books: " + error.message);
     }
 };
+exports.createBook = async (req, res) => {
+    try {
+        const newBook = await Book.create(req.body);
+        res.status(201).json(newBook);
+    } catch (error) {
+        res.status(500).send("Server error while creating the book: " + error.message);
+    }
+};

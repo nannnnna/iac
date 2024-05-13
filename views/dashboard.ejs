@@ -50,7 +50,7 @@
     <span>Total items: <%= totalItems %></span>
 <% } %>
 <% if (user.roles.includes('ROLE_ADD')) { %>
-    <button onclick="redirectToAddPage()">Добавить</button>
+    <button onclick="window.location.href='/add_book'">Добавить</button>
 <% } %>
 <% if (user.roles.includes('ROLE_EDIT')) { %>
     <button onclick="redirectToEditPage()">Изменить</button>
@@ -64,11 +64,11 @@
         location.href = `/dashboard?page=${page}`;
     }
     function submitSearch(event) {
-        event.preventDefault(); // Prevent the form from submitting traditionally
+        event.preventDefault();
         const searchValue = event.target.elements.search.value;
         const url = new URL(window.location.href);
         url.searchParams.set('search', searchValue);
-        url.searchParams.set('page', 1); // Reset to the first page
+        url.searchParams.set('page', 1);
         window.location.href = url.toString();
     }
 </script>
