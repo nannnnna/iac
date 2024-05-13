@@ -56,7 +56,7 @@
     <button onclick="redirectToEditPage()">Изменить</button>
 <% } %>
 <% if (user.roles.includes('ROLE_DELETE')) { %>
-    <button onclick="deleteSelected()">Удалить</button>
+    <button onclick="window.location.href='/delete_books'">Удалить</button>
 <% } %>
 
 <script>

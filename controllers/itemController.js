@@ -51,3 +51,26 @@ exports.createBook = async (req, res) => {
         res.status(500).send("Server error while creating the book: " + error.message);
     }
 };
+exports.getDeleteBooksPage = async (req, res) => {
+    try {
+        const books = await Book.findAll({});
+        res.render('delete_books', {
+            user: req.session.user,
+            books: books.rows,
+            roleNames: await User.getRoleNames(await User.getUserRoles(req.session.user.userId))
+        });
+    } catch (error) {
+        console.error('Error loading delete page:', error);
+        res.status(500).send("Error loading the delete books page.");
+    }
+};
+exports.deleteSelectedBooks = async (req, res) => {
+    try {
+        const idsToDelete = Array.isArray(req.body.bookId) ? req.body.bookId : [req.body.bookId];
+        await Book.deleteMultiple(idsToDelete);
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('Error deleting books:', error);
+        res.status(500).send("Server error while deleting books.");
+    }
+};

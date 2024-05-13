@@ -56,6 +56,15 @@ class Book {
             throw new Error(`Error creating new book: ${error.message}`);
         }
     }
+    static async deleteMultiple(ids) {
+        const query = `DELETE FROM books WHERE id = ANY($1::int[]) RETURNING *;`;
+        try {
+            const { rows } = await db.query(query, [ids]);
+            return rows;
+        } catch (error) {
+            throw new Error(`Error deleting books: ${error.message}`);
+        }
+    }
 }
 
 module.exports = Book;
