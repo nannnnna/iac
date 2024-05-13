@@ -65,6 +65,26 @@ class Book {
             throw new Error(`Error deleting books: ${error.message}`);
         }
     }
+    static async findById(id) {
+        const query = 'SELECT * FROM books WHERE id = $1';
+        try {
+            const { rows } = await db.query(query, [id]);
+            return rows[0];
+        } catch (error) {
+            throw new Error(`Error retrieving book: ${error.message}`);
+        }
+    }
+    static async update(id, data) {
+        const { title, description } = data;
+        const query = 'UPDATE books SET title = $1, description = $2 WHERE id = $3 RETURNING *';
+        const values = [title, description, id];
+        try {
+            const { rows } = await db.query(query, values);
+            return rows[0];
+        } catch (error) {
+            throw new Error(`Error updating book: ${error.message}`);
+        }
+    }
 }
 
 module.exports = Book;

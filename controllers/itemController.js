@@ -46,7 +46,7 @@ exports.getAllBooks = async (req, res) => {
 exports.createBook = async (req, res) => {
     try {
         const newBook = await Book.create(req.body);
-        res.status(201).json(newBook);
+        res.redirect('/dashboard');
     } catch (error) {
         res.status(500).send("Server error while creating the book: " + error.message);
     }
@@ -72,5 +72,41 @@ exports.deleteSelectedBooks = async (req, res) => {
     } catch (error) {
         console.error('Error deleting books:', error);
         res.status(500).send("Server error while deleting books.");
+    }
+};
+exports.getBooksForEditing = async (req, res) => {
+    try {
+        const books = await Book.findAll({});
+        res.render('edit_books_list', {
+            user: req.session.user,
+            books: books.rows,
+            roleNames: await User.getRoleNames(await User.getUserRoles(req.session.user.userId))
+        });
+    } catch (error) {
+        console.error('Error loading books for edit:', error);
+        res.status(500).send("Error loading the edit books page.");
+    }
+};
+
+exports.updateBook = async (req, res) => {
+    try {
+        const updatedBook = await Book.update(req.params.id, req.body);
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('Error updating book:', error);
+        res.status(500).send("Server error while updating the book.");
+    }
+};
+exports.editBook = async (req, res) => {
+    try {
+        const bookId = req.params.id;
+        const book = await Book.findById(bookId);
+        if (!book) {
+            return res.status(404).send('Book not found.');
+        }
+        res.render('edit_book', { book, user: req.session.user });
+    } catch (error) {
+        console.error('Error fetching book for editing:', error);
+        res.status(500).send("Server error while retrieving the book for editing.");
     }
 };

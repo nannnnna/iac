@@ -53,7 +53,7 @@
     <button onclick="window.location.href='/add_book'">Добавить</button>
 <% } %>
 <% if (user.roles.includes('ROLE_EDIT')) { %>
-    <button onclick="redirectToEditPage()">Изменить</button>
+    <button onclick="window.location.href='/edit_books'">Изменить</button>
 <% } %>
 <% if (user.roles.includes('ROLE_DELETE')) { %>
     <button onclick="window.location.href='/delete_books'">Удалить</button>
