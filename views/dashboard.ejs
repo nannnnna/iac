@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<h1>Welcome to the Dashboard, <%= user.fullName %>!</h1>
+<h2>List of Books</h2>
+<ul>
+    <% books.forEach(function(book) { %>
+        <li><%= book.title %>: <%= book.description %></li>
+    <% }) %>
+</ul>
+</body>
+</html>
