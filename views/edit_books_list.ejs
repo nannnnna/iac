@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Books</title>
+</head>
+<body>
+<h1>Select a Book to Edit</h1>
+<% if (books.length > 0) { %>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Select</th>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% books.forEach(book => { %>
+            <tr>
+                <td><%= book.id %></td>
+                <td><%= book.title %></td>
+                <td><%= book.description %></td>
+                <td>
+                    <!-- Use a form to post to the edit route -->
+                    <form action="/edit_book/<%= book.id %>" method="get">
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+        </tbody>
+    </table>
+<% } else { %>
+    <p>No books available to edit.</p>
+<% } %>
+</body>
+</html>
